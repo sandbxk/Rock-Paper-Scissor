@@ -1,10 +1,12 @@
 package rps.bll.game;
 
 //Java imports
+import java.io.IOException;
 import java.util.ArrayList;
 
 //Project imports
 import rps.bll.player.IPlayer;
+import rps.dal.FileLog;
 
 /**
  * Manages game state and logic etc.
@@ -16,6 +18,7 @@ public class GameManager {
     private IGameState gameState;
     private IPlayer bot;
     private IPlayer human;
+    private FileLog saveLog;
 
     /**
      * Initializes the GameManager with IPlayers
@@ -27,6 +30,7 @@ public class GameManager {
         gameState = new GameState(new ArrayList<>(), 1);
         this.human = human;
         this.bot = bot;
+        saveLog = new FileLog();
     }
 
     /**
@@ -34,7 +38,7 @@ public class GameManager {
      *
      * @param human_move The next user move
      */
-    public Result playRound(Move human_move) {
+    public Result playRound(Move human_move) throws IOException {
         Move bot_move = bot.doMove(gameState); //ask the bot to make a move...
         Result result;
         int roundNumber = gameState.getRoundNumber();
@@ -52,7 +56,7 @@ public class GameManager {
 
         gameState.setRoundNumber(++roundNumber);
         gameState.getHistoricResults().add(result);
-
+        saveLog.writeToFile(result);
         return result;
     }
 

@@ -58,4 +58,16 @@ public class Result {
     public ResultType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "type=" + type +
+                ", winnerMove=" + winnerMove +
+                ", winnerPlayer=" + winnerPlayer +
+                ", loserMove=" + loserMove +
+                ", loserPlayer=" + loserPlayer +
+                ", roundNumber=" + roundNumber +
+                '}';
+    }
 }

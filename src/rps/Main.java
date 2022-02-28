@@ -4,6 +4,8 @@ package rps;
 import rps.gui.launcher.ConsoleApp;
 import rps.gui.launcher.JavaFXApp;
 
+import java.io.IOException;
+
 
 /**
  * Main class where we start
@@ -17,13 +19,12 @@ public class Main {
      * Main start
      * @param args
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws IOException {
         //Console version
-        //startRPSConsoleGame();
+        startRPSConsoleGame();
 
         //JavaFX version
-        startRPSJavaFXGame();
+        //startRPSJavaFXGame();
     }
 
     /**
@@ -36,7 +37,7 @@ public class Main {
     /**
      * Start a console version of the game
      */
-    public static void startRPSConsoleGame() {
+    public static void startRPSConsoleGame() throws IOException {
         new ConsoleApp().startGame();
     }
 }
