@@ -1,8 +1,9 @@
 package rps;
 
-//Project imports
-import rps.gui.ConsoleApp;
-import rps.gui.JavaFXApp;
+//Project imports;
+import rps.gui.launcher.ConsoleApp;
+import rps.gui.launcher.JavaFXApp;
+
 
 /**
  * Main class where we start
@@ -19,10 +20,10 @@ public class Main {
     public static void main(String[] args)
     {
         //Console version
-        startRPSConsoleGame();
+        //startRPSConsoleGame();
 
         //JavaFX version
-        //startRPSJavaFXGame();
+        startRPSJavaFXGame();
     }
 
     /**

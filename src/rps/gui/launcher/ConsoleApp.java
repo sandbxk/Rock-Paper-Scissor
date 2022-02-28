@@ -1,4 +1,4 @@
-package rps.gui;
+package rps.gui.launcher;
 
 // Project imports
 import rps.bll.game.*;
