@@ -1,0 +1,2 @@
+Result{type=Win, winnerMove=Paper, winnerPlayer=Player{name='ye'}, loserMove=Rock, loserPlayer=Player{name='Bishop'}, roundNumber=1}
+Result{type=Tie, winnerMove=Rock, winnerPlayer=Player{name='ye'}, loserMove=Rock, loserPlayer=Player{name='Bishop'}, roundNumber=2}

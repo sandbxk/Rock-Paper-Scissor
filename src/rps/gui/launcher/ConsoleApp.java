@@ -5,6 +5,7 @@ import rps.bll.game.*;
 import rps.bll.player.*;
 
 // Java imports
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class ConsoleApp {
     /**
      * Starts the game
      */
-    public void startGame() {
+    public void startGame() throws IOException {
         System.out.println("Welcome to the classic Rock, Paper and Scissor game!");
         Scanner keyboard = new Scanner(System.in);
 
