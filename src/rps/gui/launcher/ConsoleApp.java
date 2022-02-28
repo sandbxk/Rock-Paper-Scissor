@@ -5,6 +5,8 @@ import rps.bll.game.*;
 import rps.bll.player.*;
 
 // Java imports
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,7 +28,7 @@ public class ConsoleApp {
         String playerName = keyboard.next();
 
         IPlayer human = new Player(playerName, PlayerType.Human);
-        IPlayer bot = new Player(getRandomBotName(), PlayerType.AI);
+        IPlayer bot = new Purrminator();
 
         System.out.println("Your opponent is " + bot.getPlayerName());
         System.out.println("Starting game.... good luck both!");
@@ -47,7 +49,12 @@ public class ConsoleApp {
         }
 
         if (ge.getGameState().getHistoricResults().size() > 0)
-            System.out.println("Game stats: ....ehmmmm..not implemented yet...please FIXME");
+            printGameStats(ge.getGameState().getHistoricResults().stream().toList());
+    }
+
+    private void printGameStats(List<Result> results)
+    {
+
     }
 
 
