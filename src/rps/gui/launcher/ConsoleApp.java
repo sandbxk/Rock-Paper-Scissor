@@ -5,12 +5,9 @@ import rps.bll.game.*;
 import rps.bll.player.*;
 
 // Java imports
-<<<<<<< HEAD
 import java.util.Collection;
 import java.util.List;
-=======
 import java.io.IOException;
->>>>>>> f93ad39e39b47c4041392ebf648e1a74198372b2
 import java.util.Random;
 import java.util.Scanner;
 

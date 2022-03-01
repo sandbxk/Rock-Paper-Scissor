@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -52,7 +53,10 @@ public class GameViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        imgViewPlayer.setRotationAxis(Point3D.ZERO);
+        imgViewBot.setRotationAxis(Point3D.ZERO);
+
+        // https://www.tutorialspoint.com/how-to-rotate-a-node-in-javafx
     }
 
     public void onRock(ActionEvent event) {
@@ -80,6 +84,7 @@ public class GameViewController implements Initializable {
         timeline.getKeyFrames().add(lower1Player);
         timeline.getKeyFrames().add(lower1Bot);
 
+        timeline.play();
         return timeline;
     }
 }

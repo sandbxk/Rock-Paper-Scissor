@@ -1,2 +1,5 @@
 Result{type=Win, winnerMove=Paper, winnerPlayer=Player{name='ye'}, loserMove=Rock, loserPlayer=Player{name='Bishop'}, roundNumber=1}
 Result{type=Tie, winnerMove=Rock, winnerPlayer=Player{name='ye'}, loserMove=Rock, loserPlayer=Player{name='Bishop'}, roundNumber=2}
+Result{type=Tie, winnerMove=Paper, winnerPlayer=Player{name='p'}, loserMove=Paper, loserPlayer=rps.bll.player.Purrminator@37f8bb67, roundNumber=1}
+Result{type=Win, winnerMove=Scissor, winnerPlayer=rps.bll.player.Purrminator@3f91beef, loserMove=Paper, loserPlayer=Player{name='pl'}, roundNumber=1}
+Result{type=Tie, winnerMove=Rock, winnerPlayer=Player{name='pl'}, loserMove=Rock, loserPlayer=rps.bll.player.Purrminator@3f91beef, roundNumber=2}
