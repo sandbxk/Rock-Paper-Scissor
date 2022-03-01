@@ -1,11 +1,13 @@
 package rps.gui.controller;
 
 // Java imports
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,6 +34,12 @@ public class GameViewController implements Initializable {
 
     @FXML public Label lblRoundNumber;
 
+    @FXML public ImageView imgViewBot;
+
+    @FXML public ImageView imgViewPlayer;
+
+    private static final double DEFAULT_BOT_ROTATION = 7;
+
     /**
      * Initializes the controller class.
      */
@@ -50,5 +58,10 @@ public class GameViewController implements Initializable {
     }
 
     public void onReset(ActionEvent event) {
+    }
+
+    private Timeline animateHands(){
+        Timeline timeline = new Timeline();
+
     }
 }
