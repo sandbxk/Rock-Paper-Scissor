@@ -11,6 +11,14 @@ import java.util.Random;
 public class Purrminator implements IPlayer
 {
     List<Integer> moveChance;
+    // the state transition matrix
+    double[][] markovMatrix = {
+            // R    P     S
+            { 0.33, 0.33, 0.33}, // R
+            { 0.33, 0.33, 0.33}, // P
+            { 0.33, 0.33, 0.33}  // S
+    };
+
 
     public void setMoveChance(Move moveType, int value)
     {
