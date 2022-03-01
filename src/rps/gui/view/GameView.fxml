@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../../../resources/css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rps.gui.controller.GameViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="background" stylesheets="@../../../../resources/css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rps.gui.controller.GameViewController">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -53,13 +53,13 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <ImageView fx:id="imgViewHuman" fitHeight="127.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgViewHuman" fitHeight="207.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../resources/img/player_rock.png" />
          </image></ImageView>
    </left>
    <right>
-      <ImageView fx:id="imgViewBot" fitHeight="131.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true" rotate="4.4" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgViewBot" fitHeight="188.0" fitWidth="441.0" pickOnBounds="true" preserveRatio="true" rotate="4.4" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../resources/img/bot_rock.png" />
          </image>
