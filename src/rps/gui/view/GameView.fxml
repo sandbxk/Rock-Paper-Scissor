@@ -53,13 +53,13 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <ImageView fx:id="imgViewHuman" fitHeight="207.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgViewHuman" fitHeight="207.0" fitWidth="478.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../resources/img/player_rock.png" />
          </image></ImageView>
    </left>
    <right>
-      <ImageView fx:id="imgViewBot" fitHeight="188.0" fitWidth="441.0" pickOnBounds="true" preserveRatio="true" rotate="4.4" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgViewBot" fitHeight="188.0" fitWidth="460.0" pickOnBounds="true" rotate="7.0" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../resources/img/bot_rock.png" />
          </image>
