@@ -1,7 +1,9 @@
 .background {
    /* -fx-background-color: linear-gradient(from top left, #779ecb, #80A9D9, #536E8C, #779ECB); linear-gradient(to bottom, #80A9D9,  rgba(35, 46, 58, 0.1));*/
 
-    -fx-background-color:  #82acdc, linear-gradient(to top, rgba(35, 46, 58, 0.7), #80A9D9), linear-gradient(to top, rgba(110, 146, 189, 0.5), #779ecb);
+    /*-fx-background-color:  #82acdc, linear-gradient(to top, rgba(35, 46, 58, 0.7), #80A9D9), linear-gradient(to top, rgba(110, 146, 189, 0.01), #779ecb);*/
+    -fx-background-color: #82acdc, radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 110%, rgba(108, 153, 204, 1) 40%, rgba(42,59,79,1) 110%);
+
 
 
 }
