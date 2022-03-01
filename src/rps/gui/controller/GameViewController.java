@@ -1,6 +1,8 @@
 package rps.gui.controller;
 
 // Java imports
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -62,6 +65,8 @@ public class GameViewController implements Initializable {
 
     private Timeline animateHands(){
         Timeline timeline = new Timeline();
+
+        KeyFrame shakePlayer = new KeyFrame(Duration.millis(300), new KeyValue(imgViewPlayer.rotateProperty(), 0));
         return timeline;
     }
 }
