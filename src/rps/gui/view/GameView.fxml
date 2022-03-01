@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rps.gui.controller.GameViewController">
    <bottom>
@@ -52,9 +53,18 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <ImageView fx:id="imgViewHuman" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fx:id="imgViewHuman" fitHeight="127.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../../resources/img/player_rock.png" />
+         </image></ImageView>
    </left>
    <right>
-      <ImageView fx:id="imgViewBot" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fx:id="imgViewBot" fitHeight="131.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true" rotate="4.4" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../../resources/img/bot_rock.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></ImageView>
    </right>
 </BorderPane>
