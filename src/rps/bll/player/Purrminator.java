@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class Purrminator implements IPlayer
 {
-    List<Integer> moveChance;
     // the state transition matrix
     double[][] markovMatrix = {
             // R    P     S
@@ -19,18 +18,9 @@ public class Purrminator implements IPlayer
             { 0.33, 0.33, 0.33}  // S
     };
 
-
-    public void setMoveChance(Move moveType, int value)
-    {
-        // validate + clamp total to 100 [0] < [1] < [2]
-        moveChance.set(moveType.ordinal(), value);
-    }
-
     public Purrminator()
     {
-        setMoveChance(Move.Rock, 33);
-        setMoveChance(Move.Paper, 33);
-        setMoveChance(Move.Scissor, 33);
+        
     }
 
     @Override
@@ -48,19 +38,17 @@ public class Purrminator implements IPlayer
     {
         var history = state.getHistoricResults();
 
-
-
         return RandomMove();
     }
 
     private Move RandomMove()
     {
-        int percent = Math.round(new Random().nextFloat() * 100);
+        float percent = new Random().nextFloat();
 
-        if (percent < moveChance.get(Move.Rock.ordinal()))
+        if (percent < .33f)
             return Move.Rock;
 
-        if (percent < moveChance.get(Move.Paper.ordinal()))
+        if (percent < .66f)
             return Move.Paper;
 
         return Move.Scissor;
