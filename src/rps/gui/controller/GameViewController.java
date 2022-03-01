@@ -41,7 +41,11 @@ public class GameViewController implements Initializable {
 
     @FXML public ImageView imgViewPlayer;
 
+    private static final double DEFAULT_PLAYER_ROTATION = 0;
     private static final double DEFAULT_BOT_ROTATION = 7;
+    private static final double MAX_PLAYER_ROTATION = 30;
+    private static final double MAX_BOT_ROTATION = 37;
+
 
     /**
      * Initializes the controller class.
@@ -52,6 +56,7 @@ public class GameViewController implements Initializable {
     }
 
     public void onRock(ActionEvent event) {
+        animateHands();
     }
 
     public void onPaper(ActionEvent event) {
@@ -66,7 +71,15 @@ public class GameViewController implements Initializable {
     private Timeline animateHands(){
         Timeline timeline = new Timeline();
 
-        KeyFrame shakePlayer = new KeyFrame(Duration.millis(300), new KeyValue(imgViewPlayer.rotateProperty(), 0));
+        KeyFrame lift1Player = new KeyFrame(Duration.millis(300), new KeyValue(imgViewPlayer.rotateProperty(), MAX_PLAYER_ROTATION));
+        KeyFrame lift1Bot = new KeyFrame(Duration.millis(300), new KeyValue(imgViewBot.rotateProperty(), MAX_BOT_ROTATION));
+        KeyFrame lower1Player = new KeyFrame(Duration.millis(300), new KeyValue(imgViewPlayer.rotateProperty(), DEFAULT_PLAYER_ROTATION));
+        KeyFrame lower1Bot = new KeyFrame(Duration.millis(300), new KeyValue(imgViewBot.rotateProperty(), DEFAULT_BOT_ROTATION));
+        timeline.getKeyFrames().add(lift1Player);
+        timeline.getKeyFrames().add(lift1Bot);
+        timeline.getKeyFrames().add(lower1Player);
+        timeline.getKeyFrames().add(lower1Bot);
+
         return timeline;
     }
 }
