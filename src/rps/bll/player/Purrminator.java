@@ -57,4 +57,6 @@ public class Purrminator implements IPlayer
 
         return Move.Scissor;
     }
+
+
 }

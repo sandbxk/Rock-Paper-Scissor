@@ -62,6 +62,6 @@ public class GameViewController implements Initializable {
 
     private Timeline animateHands(){
         Timeline timeline = new Timeline();
-
+        return timeline;
     }
 }
