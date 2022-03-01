@@ -53,7 +53,7 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <ImageView fx:id="imgViewHuman" fitHeight="207.0" fitWidth="478.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgViewPlayer" fitHeight="207.0" fitWidth="478.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../resources/img/player_rock.png" />
          </image></ImageView>
