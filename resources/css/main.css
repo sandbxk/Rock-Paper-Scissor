@@ -1,7 +1,7 @@
 .background {
-   /* -fx-background-color: linear-gradient(from top left, #779ecb, #80A9D9, #536E8C, #779ECB);*/
+   /* -fx-background-color: linear-gradient(from top left, #779ecb, #80A9D9, #536E8C, #779ECB); linear-gradient(to bottom, #80A9D9,  rgba(35, 46, 58, 0.1));*/
 
-    -fx-background-color:  #779ecb, linear-gradient(to top, #536E8C, #80A9D9), linear-gradient(to left bottom, rgba(128, 169, 217, .5), #779ecb);
+    -fx-background-color:  #82acdc, linear-gradient(to top, rgba(35, 46, 58, 0.7), #80A9D9), linear-gradient(to top, rgba(110, 146, 189, 0.5), #779ecb);
 
 
 }
