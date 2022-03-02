@@ -58,7 +58,7 @@ public class GameManager {
 
         gameState.setRoundNumber(++roundNumber);
         gameState.getHistoricResults().add(result);
-        readWrite.output(result);
+        //readWrite.output(result);
         return result;
     }
 

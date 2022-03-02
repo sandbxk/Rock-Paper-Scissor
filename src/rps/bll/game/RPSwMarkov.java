@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class RPSwMarkov {
-
+public class RPSwMarkov
+{
         // todo: remove enum
         public enum Item {
             ROCK, PAPER, SCISSORS;
@@ -25,7 +25,7 @@ public class RPSwMarkov {
         }
 
         // todo: convert to Move enum (Item)
-        private static Item getWinner(Item opponentMove)
+        private static Item getMoveThatBeats(Item opponentMove)
         {
             return switch (opponentMove)
             {
@@ -37,8 +37,10 @@ public class RPSwMarkov {
 
         private static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat(".##");
         public static final Random RANDOM = new Random();
+
         //Game statistics - player,tie and computer
         private int[] stats = new int[] {0, 0, 0};
+
         //Markov chain for previous throw to current throw prediction
         private float[][] markovChain;
         private int round = 0;
@@ -70,7 +72,7 @@ public class RPSwMarkov {
             markovChain[prev.ordinal()][next.ordinal()]++;
         }
 
-        private Item nextMove(Item prev)
+        private Item predictWinningMove(Item lastPlayerMove)
         {
             // todo: if history.length == 0
             if (round == 0) {
@@ -80,25 +82,23 @@ public class RPSwMarkov {
 
             //Predicting next item chosen by the user - reading data in our Markov chain/matrix
             //Done by looking into our previous item
-            int nextIndex = 0;
+
+            // initial guess
+            Item predictedNextPlayerMove = Item.ROCK;
 
             for (int i = 0; i < Item.values().length; i++)
             {
-                int prevIndex = prev.ordinal();
-
-                if (markovChain[prevIndex][i] > markovChain[prevIndex][nextIndex])
+                // find best fit
+                if (markovChain[lastPlayerMove.ordinal()][i] > markovChain[lastPlayerMove.ordinal()][predictedNextPlayerMove.ordinal()])
                 {
-                    nextIndex = i;
+                    predictedNextPlayerMove = Item.values()[i];
                 }
             }
 
-            //Next item played by the user is in nextIndex
-            Item predictedNext = Item.values()[nextIndex];
-
-            //Choosing amongst items for which this next item would lose
-            List<Item> losesTo = predictedNext.losesTo;
-            return losesTo.get(RANDOM.nextInt(losesTo.size()));
+            // get the move that wins over the prediction
+            return getMoveThatBeats(predictedNextPlayerMove);
         }
+
         private Scanner input = new Scanner(System.in);
 
         private Item getPlayerMove(String input)
@@ -110,7 +110,7 @@ public class RPSwMarkov {
             catch (Exception e)
             {
                 System.out.println("Invalid choice");
-                return getPlayerMove(input.toUpperCase());
+                return null;
             }
         }
 
@@ -118,24 +118,32 @@ public class RPSwMarkov {
         {
             init();
 
-            System.out.print("Make your choice : ");
-
             while (input.hasNextLine())
             {
-                Item PlayerChoice = getPlayerMove(input.nextLine());
-                Item AIChoice = nextMove(lastPlayerMove);
+                System.out.print("Make your choice : ");
 
-                printWinner(PlayerChoice, AIChoice);
+                String cliInput = input.nextLine();
+
+                if (cliInput.equals(""))
+                    continue;
+
+                if (cliInput.equals("q"))
+                    break;
+
+                Item currentPlayerMove = getPlayerMove(cliInput);
+                Item currentAIMove = predictWinningMove(lastPlayerMove);
+
+
+                printWinner(currentPlayerMove, currentAIMove);
 
                 //Update Markov chain
                 if (lastPlayerMove != null)
                 {
-                    updateMarkovChain(lastPlayerMove, PlayerChoice);
+                    updateMarkovChain(lastPlayerMove, currentPlayerMove);
                 }
 
-                lastPlayerMove = PlayerChoice;
+                lastPlayerMove = currentPlayerMove;
                 round++;
-
             }
 
             input.close();
