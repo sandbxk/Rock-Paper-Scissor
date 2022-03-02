@@ -2,34 +2,37 @@ package rps.dal;
 
 import rps.bll.game.Result;
 
+
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ObjectIO {
-FileOutputStream FileOut = new FileOutputStream("statistic.txt");
-FileInputStream FileIn = new FileInputStream("statistic.txt");
-ObjectOutputStream ObjOut = new ObjectOutputStream(FileOut);
-ObjectInputStream ObjIn = new ObjectInputStream(FileIn);
-
 
     public ObjectIO() throws IOException {
     }
 
     public void writeObject(Result result) throws IOException {
-        ObjOut.writeObject(result);
+        //ObjectOutputStream can only handle a single Object or ArrayList of Objects
+        ArrayList<Result> results = new ArrayList<>();
+        try (ObjectOutputStream ObjOut = new ObjectOutputStream(new FileOutputStream("statistic.txt"))) {
+            results.addAll(readObject());
+            results.add(result);
+            ObjOut.writeObject(result);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public void writeAllObjects(List<Result> results) throws IOException {
-        //ObjectOutputStream can only handle an object or an ArrayList of Objects.
-        ArrayList<Result> ListOfResults = new ArrayList<>();
-        ListOfResults.addAll(results);
-        ObjOut.writeObject(ListOfResults);
-    }
-
-    public void readAllObjects() throws IOException
-    {
-        ObjIn
+    public ArrayList<Result> readObject() throws FileNotFoundException {
+        ArrayList<Result> results = new ArrayList<>();
+        try (ObjectInputStream ObjIn = new ObjectInputStream(new FileInputStream("statistic.txt"))) {
+            if (ObjIn.readObject() != null)
+            results = (ArrayList<Result>) ObjIn.readObject();
+        } catch (IOException | ClassNotFoundException e ) {
+            e.printStackTrace();
+        }
+        return results;
     }
 
 }
