@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class RPSwMarkov
 {
+        private final static float EPSILON = 0.001f;
         // todo: remove enum
         public enum Item {
             ROCK, PAPER, SCISSORS;
@@ -69,7 +70,15 @@ public class RPSwMarkov
         //The ordinal() function gives the position of the item in its enum declaration
         private void updateMarkovChain(Item prev, Item next)
         {
-            markovChain[prev.ordinal()][next.ordinal()]++;
+            float weightStep = 1;
+
+            markovChain[prev.ordinal()][next.ordinal()] += weightStep;
+
+            System.out.println("row #" + prev.ordinal() + " total" + (1 + weightStep));
+
+            markovChain[prev.ordinal()][0] = (markovChain[prev.ordinal()][0] / (1 + weightStep));
+            markovChain[prev.ordinal()][1] = (markovChain[prev.ordinal()][1] / (1 + weightStep));
+            markovChain[prev.ordinal()][2] = (markovChain[prev.ordinal()][2] / (1 + weightStep));
         }
 
         private Item predictWinningMove(Item lastPlayerMove)
