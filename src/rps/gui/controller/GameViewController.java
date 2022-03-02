@@ -1,6 +1,7 @@
 package rps.gui.controller;
 
 // Java imports
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -100,8 +101,6 @@ public class GameViewController implements Initializable {
         lblPlayerName.setText(player.getPlayerName());
         lblBotName.setText(bot.getPlayerName());
         lblRoundNumber.setText(String.valueOf(gameManager.getGameState().getRoundNumber()));
-
-        //Counters and reset button
     }
 
     private void initRotate(){
@@ -142,9 +141,8 @@ public class GameViewController implements Initializable {
     {
         animateHands(250).setOnFinished(event ->
         {
-            Result result;
             try {
-                result = gameManager.playRound(humanMove);
+                gameManager.playRound(humanMove);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -202,6 +200,10 @@ public class GameViewController implements Initializable {
     }
 
     public void onReset(ActionEvent event) {
+        if (btnReset.getTranslateX() == 0){
+            btnReset.setTranslateX(-50);
+        }
+        else btnReset.setTranslateX(0);
     }
 
 
