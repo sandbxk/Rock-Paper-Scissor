@@ -1,8 +1,6 @@
 package rps.bll.player;
 
-import rps.bll.game.GameState;
-import rps.bll.game.IGameState;
-import rps.bll.game.Move;
+import rps.bll.game.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +31,34 @@ public class Purrminator implements IPlayer
         return PlayerType.AI;
     }
 
+    private Move getLastPlayerMove(Result lastRound)
+    {
+        if (lastRound.getWinnerPlayer().getPlayerType() == this.getPlayerType())
+        {
+            // AI winner
+            return lastRound.getLoserMove(); // player move
+        }
+        else
+        {
+            // player winner
+            return lastRound.getWinnerMove(); // player move
+        }
+    }
+
     @Override
     public Move doMove(IGameState state)
     {
-        var history = state.getHistoricResults();
+        List<Result> history = state.getHistoricResults().stream().toList();
 
-        return RandomMove();
+        if (history.size() < 1)
+            return RandomMove();
+
+        Move lastPlayerMove = getLastPlayerMove(history.get(history.size() - 1));
+        Move prediction = predictWinningMove(lastPlayerMove);
+
+        updateMarkovChain(lastPlayerMove, prediction);
+
+        return prediction;
     }
 
     private Move RandomMove()
@@ -54,5 +74,50 @@ public class Purrminator implements IPlayer
         return Move.Scissor;
     }
 
+    private static Move getMoveThatBeats(Move opponentMove)
+    {
+        return switch (opponentMove)
+                {
+                    case Rock -> Move.Paper;
+                    case Paper -> Move.Scissor;
+                    case Scissor -> Move.Rock;
+                };
+    }
+
+
+    //The ordinal() function gives the position of the item in its enum declaration
+    private void updateMarkovChain(Move prev , Move next)
+    {
+        float weightStep = 1;
+
+        markovMatrix[prev.ordinal()][next.ordinal()] += weightStep;
+
+        System.out.println("row #" + prev.ordinal() + " total" + (1 + weightStep));
+
+        markovMatrix[prev.ordinal()][0] = (markovMatrix[prev.ordinal()][0] / (1 + weightStep));
+        markovMatrix[prev.ordinal()][1] = (markovMatrix[prev.ordinal()][1] / (1 + weightStep));
+        markovMatrix[prev.ordinal()][2] = (markovMatrix[prev.ordinal()][2] / (1 + weightStep));
+    }
+
+    private Move predictWinningMove(Move lastPlayerMove)
+    {
+        //Predicting next item chosen by the user - reading data in our Markov chain/matrix
+        //Done by looking into our previous item
+
+        // initial guess
+        Move predictedNextPlayerMove = RandomMove();
+
+        for (int i = 0; i < RPSwMarkov.Item.values().length; i++)
+        {
+            // find best fit
+            if (markovMatrix[lastPlayerMove.ordinal()][i] > markovMatrix[lastPlayerMove.ordinal()][predictedNextPlayerMove.ordinal()])
+            {
+                predictedNextPlayerMove = Move.values()[i];
+            }
+        }
+
+        // get the move that wins over the prediction
+        return getMoveThatBeats(predictedNextPlayerMove);
+    }
 
 }
