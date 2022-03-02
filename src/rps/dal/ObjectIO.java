@@ -29,7 +29,7 @@ ObjectInputStream ObjIn = new ObjectInputStream(FileIn);
 
     public void readAllObjects() throws IOException
     {
-        ObjIn
+        //ObjIn
     }
 
 }
