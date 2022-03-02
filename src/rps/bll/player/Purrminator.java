@@ -25,7 +25,7 @@ public class Purrminator implements IPlayer
 
     @Override
     public String getPlayerName() {
-        return "Miaow";
+        return "Cypurrdyne Systems Mewdel 77";
     }
 
     @Override
