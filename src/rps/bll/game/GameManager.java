@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import rps.bll.player.IPlayer;
 import rps.dal.FileLog;
 import rps.dal.ObjectIO;
+import rps.gui.controller.GameViewController;
 
 /**
  * Manages game state and logic etc.
@@ -42,6 +43,7 @@ public class GameManager {
      */
     public Result playRound(Move human_move) throws IOException {
         Move bot_move = bot.doMove(gameState); //ask the bot to make a move...
+        GameViewController.getInstance().setBotMove(bot_move);
         Result result;
         int roundNumber = gameState.getRoundNumber();
 

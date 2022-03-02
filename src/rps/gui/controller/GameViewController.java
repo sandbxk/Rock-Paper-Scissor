@@ -3,24 +3,29 @@ package rps.gui.controller;
 // Java imports
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point3D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import rps.bll.game.GameManager;
+import rps.bll.game.Move;
+import rps.bll.game.Result;
+import rps.bll.game.ResultType;
+import rps.bll.player.IPlayer;
+import rps.bll.player.Player;
+import rps.bll.player.PlayerType;
+import rps.bll.player.Purrminator;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -48,6 +53,9 @@ public class GameViewController implements Initializable {
 
     @FXML public ImageView imgViewPlayer;
 
+    @FXML public Label lblBotName;
+    @FXML public Label lblPlayerName;
+
     private static final double DEFAULT_PLAYER_ROTATION = 0;
     private static final double DEFAULT_BOT_ROTATION = 7;
     private static final double MAX_PLAYER_ROTATION = -30;
@@ -64,20 +72,36 @@ public class GameViewController implements Initializable {
     private Rotate playerRotate;
     private Rotate botRotate;
 
+    private Move botMove;
+    private static GameViewController instance;
+    private GameManager gameManager;
+    private IPlayer player;
+    private IPlayer bot;
+
+
+    public GameViewController() {
+        player = new Player("Player", PlayerType.Human);
+        bot = new Purrminator();
+        instance = this;
+        try {
+            gameManager = new GameManager(player, bot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //imgViewBot.setRotate(DEFAULT_BOT_ROTATION);
-        //imgViewPlayer.setRotationAxis(new Point3D(0, 0, (imgViewBot.getX() - imgViewBot.getFitWidth())));
-       //imgViewBot.setRotationAxis(new Point3D(imgViewBot.getX() + imgViewBot.getX(), imgViewBot.getX() + imgViewBot.getX(), (imgViewBot.getX() + imgViewBot.getFitWidth())));
-        //imgViewBot.setRotationAxis(new Point3D(0, 0,(imgViewBot.getX() + imgViewBot.getFitWidth())));
-
-
         initImages();
         initRotate();
+        lblPlayerName.setText(player.getPlayerName());
+        lblBotName.setText(bot.getPlayerName());
+        lblRoundNumber.setText(String.valueOf(gameManager.getGameState().getRoundNumber()));
+
+        //Counters and reset button
     }
 
     private void initRotate(){
@@ -90,7 +114,6 @@ public class GameViewController implements Initializable {
         botRotate.setPivotX(imgViewBot.getX() + imgViewBot.getFitWidth());
         botRotate.setPivotY(imgViewBot.getY() + (imgViewPlayer.getFitHeight() / 2));
         imgViewBot.getTransforms().add(botRotate);
-
     }
 
     private void initImages(){
@@ -101,20 +124,71 @@ public class GameViewController implements Initializable {
         playerRock = new Image(getClass().getResource("/rps/resources/img/player_rock.png").toExternalForm());
         playerPaper = new Image(getClass().getResource("/rps/resources/img/player_paper.png").toExternalForm());
         playerScissor = new Image(getClass().getResource("/rps/resources/img/player_scissor.png").toExternalForm());
-
-
     }
 
     public void onRock(ActionEvent event) {
-        animateHands(200).setOnFinished(event1 -> {
-            imgViewBot.setImage(botPaper);
-        });
+        play(Move.Rock);
     }
 
     public void onPaper(ActionEvent event) {
+        play(Move.Paper);
     }
 
     public void onScissor(ActionEvent event) {
+        play(Move.Scissor);
+    }
+
+    private void play(Move humanMove){
+        animateHands(250).setOnFinished(event -> {
+            Result result;
+            try {
+                result = gameManager.playRound(humanMove);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            switch (humanMove){
+                case Rock -> imgViewPlayer.setImage(playerRock);
+                case Paper -> imgViewPlayer.setImage(playerPaper);
+                case Scissor -> imgViewPlayer.setImage(playerScissor);
+            }
+            switch (botMove){
+                case Rock -> imgViewBot.setImage(botRock);
+                case Paper -> imgViewBot.setImage(botPaper);
+                case Scissor -> imgViewBot.setImage(botScissor);
+            }
+            setCounters();
+            enableDisableButtons(false);
+        });
+    }
+
+    private void setCounters(){
+        lblRoundNumber.setText(String.valueOf(gameManager.getGameState().getRoundNumber()));
+        AtomicInteger ties = new AtomicInteger();
+        AtomicInteger playerWins = new AtomicInteger();
+        AtomicInteger botWins = new AtomicInteger();
+        gameManager.getGameState().getHistoricResults().forEach((result) -> {
+            System.out.println(result.getType());
+            if (result.getType() == ResultType.Tie){
+                ties.getAndIncrement();
+            }
+            else if (result.getType() == ResultType.Win && result.getWinnerPlayer() == player){
+                playerWins.getAndIncrement();
+            }
+            else if (result.getType() == ResultType.Win && result.getWinnerPlayer() == bot){
+                botWins.getAndIncrement();
+            }
+        });
+        lblHumanWins.setText(playerWins.toString());
+        lblBotWins.setText(botWins.toString());
+        lblTies.setText(ties.toString());
+    }
+
+    private void enableDisableButtons(boolean value){
+        btnPaper.setDisable(value);
+        btnRock.setDisable(value);
+        btnScissor.setDisable(value);
+        btnReset.setDisable(value);
     }
 
     public void onReset(ActionEvent event) {
@@ -122,6 +196,7 @@ public class GameViewController implements Initializable {
 
 
     private Timeline animateHands(int durationMillis){
+        enableDisableButtons(true);
         imgViewBot.setImage(botRock);
         imgViewPlayer.setImage(playerRock);
 
@@ -175,7 +250,6 @@ public class GameViewController implements Initializable {
         lower3.setOnFinished(event -> raise4.play());
         raise4.setOnFinished(event -> imageChangeOnAnimation(lower4, imgViewPlayer, imgViewBot, playerRock, botRock));
 
-
         raise1.play();
 
         return lower4;
@@ -188,4 +262,18 @@ public class GameViewController implements Initializable {
         imgView2.setImage(img2);
         timeline.play();
     }
+
+
+
+    public void setBotMove(Move botMove) {
+        this.botMove = botMove;
+    }
+
+    public static GameViewController getInstance(){
+        if (instance == null){
+            return new GameViewController();
+        }
+        else return instance;
+    }
+
 }
