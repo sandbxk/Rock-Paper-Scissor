@@ -138,8 +138,10 @@ public class GameViewController implements Initializable {
         play(Move.Scissor);
     }
 
-    private void play(Move humanMove){
-        animateHands(250).setOnFinished(event -> {
+    private void play(Move humanMove)
+    {
+        animateHands(250).setOnFinished(event ->
+        {
             Result result;
             try {
                 result = gameManager.playRound(humanMove);
@@ -147,28 +149,35 @@ public class GameViewController implements Initializable {
                 e.printStackTrace();
             }
 
-            switch (humanMove){
+            switch (humanMove)
+            {
                 case Rock -> imgViewPlayer.setImage(playerRock);
                 case Paper -> imgViewPlayer.setImage(playerPaper);
                 case Scissor -> imgViewPlayer.setImage(playerScissor);
             }
-            switch (botMove){
+
+            switch (botMove)
+            {
                 case Rock -> imgViewBot.setImage(botRock);
                 case Paper -> imgViewBot.setImage(botPaper);
                 case Scissor -> imgViewBot.setImage(botScissor);
             }
+
             setCounters();
             enableDisableButtons(false);
         });
     }
 
-    private void setCounters(){
+    private void setCounters()
+    {
         lblRoundNumber.setText(String.valueOf(gameManager.getGameState().getRoundNumber()));
+
         AtomicInteger ties = new AtomicInteger();
         AtomicInteger playerWins = new AtomicInteger();
         AtomicInteger botWins = new AtomicInteger();
-        gameManager.getGameState().getHistoricResults().forEach((result) -> {
-            System.out.println(result.getType());
+
+        gameManager.getGameState().getHistoricResults().forEach((result) ->
+        {
             if (result.getType() == ResultType.Tie){
                 ties.getAndIncrement();
             }
@@ -179,6 +188,7 @@ public class GameViewController implements Initializable {
                 botWins.getAndIncrement();
             }
         });
+
         lblHumanWins.setText(playerWins.toString());
         lblBotWins.setText(botWins.toString());
         lblTies.setText(ties.toString());

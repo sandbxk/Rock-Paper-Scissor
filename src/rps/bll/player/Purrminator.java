@@ -9,11 +9,11 @@ import java.util.Random;
 public class Purrminator implements IPlayer
 {
     // the state transition matrix
-    double[][] markovMatrix = {
+    float[][] markovMatrix = {
             // R    P     S
-            { 0.33, 0.33, 0.33}, // R
-            { 0.33, 0.33, 0.33}, // P
-            { 0.33, 0.33, 0.33}  // S
+            { 0.33f, 0.33f, 0.33f}, // R
+            { 0.33f, 0.33f, 0.33f}, // P
+            { 0.33f, 0.33f, 0.33f}  // S
     };
 
     public Purrminator()
@@ -31,17 +31,17 @@ public class Purrminator implements IPlayer
         return PlayerType.AI;
     }
 
-    private Move getLastPlayerMove(Result lastRound)
+    private Move getPlayerMoveFrom(Result round)
     {
-        if (lastRound.getWinnerPlayer().getPlayerType() == this.getPlayerType())
+        if (round.getWinnerPlayer().getPlayerType() == this.getPlayerType())
         {
             // AI winner
-            return lastRound.getLoserMove(); // player move
+            return round.getLoserMove(); // player move
         }
         else
         {
             // player winner
-            return lastRound.getWinnerMove(); // player move
+            return round.getWinnerMove(); // player move
         }
     }
 
@@ -50,15 +50,10 @@ public class Purrminator implements IPlayer
     {
         List<Result> history = state.getHistoricResults().stream().toList();
 
-        if (history.size() < 1)
+        if (history.size() < 2)
             return RandomMove();
 
-        Move lastPlayerMove = getLastPlayerMove(history.get(history.size() - 1));
-        Move prediction = predictWinningMove(lastPlayerMove);
-
-        updateMarkovChain(lastPlayerMove, prediction);
-
-        return prediction;
+        return markovianMove(history);
     }
 
     private Move RandomMove()
@@ -84,19 +79,34 @@ public class Purrminator implements IPlayer
                 };
     }
 
-
-    //The ordinal() function gives the position of the item in its enum declaration
-    private void updateMarkovChain(Move prev , Move next)
+    private Move markovianMove(List<Result> history)
     {
-        float weightStep = 1;
+        if (history.size() < 2)
+            return null;
 
-        markovMatrix[prev.ordinal()][next.ordinal()] += weightStep;
+        Move lastPlayerMove = getPlayerMoveFrom(history.get(history.size() - 1));
 
-        System.out.println("row #" + prev.ordinal() + " total" + (1 + weightStep));
+        Move prediction = predictStatisticalMove(lastPlayerMove);
 
-        markovMatrix[prev.ordinal()][0] = (markovMatrix[prev.ordinal()][0] / (1 + weightStep));
-        markovMatrix[prev.ordinal()][1] = (markovMatrix[prev.ordinal()][1] / (1 + weightStep));
-        markovMatrix[prev.ordinal()][2] = (markovMatrix[prev.ordinal()][2] / (1 + weightStep));
+        updateMarkovChain(history);
+
+        return prediction;
+    }
+
+    private void updateMarkovChain(List<Result> history)
+    {
+        float weightStep = new Random().nextFloat();
+
+        var TargetMove = getPlayerMoveFrom(history.get(history.size() - 1));
+        var OriginMove = getPlayerMoveFrom(history.get(history.size() - 2));
+
+        // update bias
+        markovMatrix[OriginMove.ordinal()][TargetMove.ordinal()] += weightStep;
+
+        // normalize updated transition matrix row
+        markovMatrix[TargetMove.ordinal()][0] = (markovMatrix[TargetMove.ordinal()][0] / (1f + weightStep));
+        markovMatrix[TargetMove.ordinal()][1] = (markovMatrix[TargetMove.ordinal()][1] / (1f + weightStep));
+        markovMatrix[TargetMove.ordinal()][2] = (markovMatrix[TargetMove.ordinal()][2] / (1f + weightStep));
     }
 
     private Move predictWinningMove(Move lastPlayerMove)
@@ -107,7 +117,7 @@ public class Purrminator implements IPlayer
         // initial guess
         Move predictedNextPlayerMove = RandomMove();
 
-        for (int i = 0; i < RPSwMarkov.Item.values().length; i++)
+        for (int i = 0; i < Move.values().length; i++)
         {
             // find best fit
             if (markovMatrix[lastPlayerMove.ordinal()][i] > markovMatrix[lastPlayerMove.ordinal()][predictedNextPlayerMove.ordinal()])
@@ -118,6 +128,26 @@ public class Purrminator implements IPlayer
 
         // get the move that wins over the prediction
         return getMoveThatBeats(predictedNextPlayerMove);
+    }
+
+    private Move predictStatisticalMove(Move lastPlayerMove)
+    {
+        Move bestFitness = null;
+
+        float optimalDistance = 0f;
+
+        for (int moveType = 0; moveType < 3; moveType++)
+        {
+            if (markovMatrix[lastPlayerMove.ordinal()][moveType] > optimalDistance)
+            {
+                optimalDistance = markovMatrix[lastPlayerMove.ordinal()][moveType];
+                bestFitness = Move.values()[moveType];
+            }
+        }
+
+        System.out.println("predicted:" + bestFitness);
+
+        return getMoveThatBeats(bestFitness);
     }
 
 }
