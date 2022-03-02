@@ -4,12 +4,14 @@ package rps.bll.player;
 import rps.bll.game.IGameState;
 import rps.bll.game.Move;
 
+import java.io.Serializable;
+
 /**
  * Defines a Player in the game including its strategy (doMove())
  *
  * @author smsj
  */
-public interface IPlayer {
+public interface IPlayer extends Serializable {
 
     /**
      * Returns the name of the player
