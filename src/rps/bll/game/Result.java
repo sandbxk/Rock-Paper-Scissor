@@ -3,12 +3,14 @@ package rps.bll.game;
 // Project imports
 import rps.bll.player.IPlayer;
 
+import java.io.Serializable;
+
 /**
  * Defines a Result in the game
  *
  * @author smsj
  */
-public class Result {
+public class Result implements Serializable {
     private ResultType type;
     private Move winnerMove;
     private IPlayer winnerPlayer;
@@ -33,6 +35,10 @@ public class Result {
         this.loserMove = loserMove;
         this.type = type;
         this.roundNumber = roundNumber;
+    }
+    public Result()
+    {
+
     }
 
     public Move getWinnerMove() {

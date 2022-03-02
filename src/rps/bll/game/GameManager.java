@@ -7,6 +7,7 @@ import java.util.ArrayList;
 //Project imports
 import rps.bll.player.IPlayer;
 import rps.dal.FileLog;
+import rps.dal.ObjectIO;
 
 /**
  * Manages game state and logic etc.
@@ -19,6 +20,7 @@ public class GameManager {
     private IPlayer bot;
     private IPlayer human;
     private FileLog saveLog;
+    private ObjectIO readWrite;
 
     /**
      * Initializes the GameManager with IPlayers
@@ -26,11 +28,11 @@ public class GameManager {
      * @param human
      * @param bot
      */
-    public GameManager(IPlayer human, IPlayer bot) {
+    public GameManager(IPlayer human, IPlayer bot) throws IOException {
         gameState = new GameState(new ArrayList<>(), 1);
         this.human = human;
         this.bot = bot;
-        saveLog = new FileLog();
+        readWrite = new ObjectIO();
     }
 
     /**
@@ -56,7 +58,7 @@ public class GameManager {
 
         gameState.setRoundNumber(++roundNumber);
         gameState.getHistoricResults().add(result);
-        saveLog.writeToFile(result);
+        readWrite.output(result);
         return result;
     }
 
