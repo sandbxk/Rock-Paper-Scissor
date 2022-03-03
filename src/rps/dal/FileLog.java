@@ -40,7 +40,7 @@ public class FileLog {
         return null;
     }
 
-    public void writeMatrix(String filename, double[][] matrix) {
+    public void writeMatrix(String filename, float[][] matrix) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix[i].length; j++) {
@@ -53,14 +53,14 @@ public class FileLog {
         }
     }
 
-    public double[][] readMatrix(String filename) throws FileNotFoundException {
-        double[][] nMatrix = new double[3][3];
+    public float[][] readMatrix(String filename) throws FileNotFoundException {
+        float[][] nMatrix = new float[3][3];
         try (BufferedReader br = new BufferedReader(new FileReader(filename)))
         {
             for (int i = 0; i < 3; i++) {
                 String[] split = br.readLine().split(",");
                 for (int j = 0; j < 3; j++) {
-                    nMatrix[i][j] = Double.parseDouble(split[j]);
+                    nMatrix[i][j] = Float.parseFloat(split[j]);
 
                     
                 }
