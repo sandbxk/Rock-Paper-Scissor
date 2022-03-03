@@ -1,24 +1,27 @@
 package rps.bll.player;
 
 import rps.bll.game.*;
+import rps.dal.FileLog;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Purrminator implements IPlayer
 {
+    FileLog IO = new FileLog();
     // the state transition matrix
     float[][] markovMatrix = {
             // R    P     S
             { 0.33f, 0.33f, 0.33f}, // R
             { 0.33f, 0.33f, 0.33f}, // P
             { 0.33f, 0.33f, 0.33f}  // S
+
     };
 
-    public Purrminator()
-    {
-        
+    public Purrminator() throws FileNotFoundException {
+        markovMatrix = IO.readMatrix("matrix.txt");
     }
 
     @Override
@@ -107,6 +110,7 @@ public class Purrminator implements IPlayer
         markovMatrix[TargetMove.ordinal()][0] = (markovMatrix[TargetMove.ordinal()][0] / (1f + weightStep));
         markovMatrix[TargetMove.ordinal()][1] = (markovMatrix[TargetMove.ordinal()][1] / (1f + weightStep));
         markovMatrix[TargetMove.ordinal()][2] = (markovMatrix[TargetMove.ordinal()][2] / (1f + weightStep));
+        IO.writeMatrix("matrix.txt",markovMatrix);
     }
 
     private Move predictWinningMove(Move lastPlayerMove)

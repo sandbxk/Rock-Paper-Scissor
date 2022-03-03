@@ -23,6 +23,7 @@ import rps.bll.player.Player;
 import rps.bll.player.PlayerType;
 import rps.bll.player.Purrminator;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -80,7 +81,7 @@ public class GameViewController implements Initializable {
     private IPlayer bot;
 
 
-    public GameViewController() {
+    public GameViewController() throws FileNotFoundException {
         player = new Player("Player", PlayerType.Human);
         bot = new Purrminator();
         instance = this;
@@ -281,7 +282,7 @@ public class GameViewController implements Initializable {
         this.botMove = botMove;
     }
 
-    public static GameViewController getInstance(){
+    public static GameViewController getInstance() throws FileNotFoundException {
         if (instance == null){
             return new GameViewController();
         }
