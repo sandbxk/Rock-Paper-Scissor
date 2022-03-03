@@ -11,6 +11,7 @@ import java.io.Serializable;
  * @author smsj
  */
 public class Result implements Serializable {
+
     private ResultType type;
     private Move winnerMove;
     private IPlayer winnerPlayer;
@@ -63,6 +64,30 @@ public class Result implements Serializable {
 
     public ResultType getType() {
         return type;
+    }
+
+    public void setType(ResultType type) {
+        this.type = type;
+    }
+
+    public void setWinnerMove(Move winnerMove) {
+        this.winnerMove = winnerMove;
+    }
+
+    public void setWinnerPlayer(IPlayer winnerPlayer) {
+        this.winnerPlayer = winnerPlayer;
+    }
+
+    public void setLoserMove(Move loserMove) {
+        this.loserMove = loserMove;
+    }
+
+    public void setLoserPlayer(IPlayer loserPlayer) {
+        this.loserPlayer = loserPlayer;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
     }
 
     @Override

@@ -17,23 +17,30 @@ public class FileLog {
     String pathResult = "statistic.txt";
     String pathMatrix = "matrix.txt";
 
-    public void writeToFile(Result result) throws IOException {
-        String toLog = result.toString() + "\n";
-        Files.write(Path.of(pathResult), toLog.getBytes(), APPEND);
-    }
-
-    private List<String> readFromFile() {
-        List<String> result = new ArrayList<>();
-        Scanner scanner = new Scanner(pathResult);
-        while (scanner.hasNextLine()) {
-            String newLine = scanner.nextLine();
-            result.add(newLine);
+    public void writeToFile(String filename, Result result) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename)))
+        {
+            bw.write(""+ result.getWinnerPlayer() +"," + result.getWinnerMove()+","+result.getLoserMove()+"\"");
         }
-        System.out.println(result);
-        return result;
     }
 
-    void writeMatrix(String filename, double[][] matrix) {
+    private List<String> readFromFile(String filename) throws IOException {
+        String winnerPlayer;
+        String winnerMove;
+        String loserMove;
+        String loaded;
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            while (br.readLine() != null) {
+                loaded = br.readLine();
+                System.out.println(loaded);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void writeMatrix(String filename, double[][] matrix) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix[i].length; j++) {
@@ -61,5 +68,10 @@ public class FileLog {
         } catch (IOException e) {
         }
         return nMatrix;
+    }
+
+    public static void main(String[] args) {
+        FileLog fl = new FileLog();
+        Result result = new Result();
     }
 }
