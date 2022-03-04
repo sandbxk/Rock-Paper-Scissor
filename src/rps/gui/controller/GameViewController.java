@@ -201,10 +201,10 @@ public class GameViewController implements Initializable {
     }
 
     public void onReset(ActionEvent event) {
-        if (btnReset.getTranslateX() == 0){
-            btnReset.setTranslateX(-50);
-        }
-        else btnReset.setTranslateX(0);
+        gameManager.getGameState().getHistoricResults().clear();
+        setCounters();
+        gameManager.getGameState().setRoundNumber(1);
+        lblRoundNumber.setText(String.valueOf(gameManager.getGameState().getRoundNumber()));
     }
 
 
